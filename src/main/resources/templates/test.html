@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Timetable</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f5fe;
+      margin: 20px;
+    }
+
+    h2 {
+      color: #1a4d80;
+      text-align: center;
+    }
+
+    h3 {
+      color: #1a4d80;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      border: 2px solid #1a4d80;
+      background-color: #ebf4f7;
+    }
+
+    th, td {
+      border: 1px solid #1a4d80;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #0c3061;
+      color: #ffffff;
+    }
+
+    tbody tr td:hover {
+      background-color: #cce5ff;
+    }
+
+
+    th:first-child,
+    td:first-child {
+      width: 120px;
+    }
+
+
+    tbody.empty-row {
+      height: 30px;
+    }
+
+
+    tbody.space-row {
+      height: 50px;
+      background-color: #f0f5fe;
+    }
+    button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s, transform 0.3s ease-in-out;
+    margin-bottom: 10px;
+
+}
+
+
+button:hover {
+    background-color: #217dbb;
+    transform: scale(1.03);
+}
+  </style>
+</head>
+<body>
+
+<h2>School Timetable</h2>
+
+
+<table>
+  <tbody>
+  <th:block th:each="day : ${#sets.toSet(schedules.![dayOfWeek])}">
+    <th:block th:if="${dayStat.index > 0}">
+
+      <tr class="space-row"></tr>
+    </th:block>
+    <tr>
+      <th colspan="6" th:text="${day}"></th>
+    </tr>
+    <tr>
+      <th>Course code</th>
+      <th>Start time</th>
+      <th>End time</th>
+      <th>Lecturer</th>
+      <th>Location</th>
+    </tr>
+    <th:block th:each="event : ${schedules}">
+      <th:block th:if="${event.dayOfWeek == day}">
+        <tr>
+          <td th:text="${event.courseCode}"></td>
+          <td th:text="${event.startTime}"></td>
+          <td th:text="${event.endTime}"></td>
+          <td th:text="${event.lecturer}"></td>
+          <td th:text="${event.location}"></td>
+        </tr>
+      </th:block>
+    </th:block>
+  </th:block>
+  </tbody>
+</table><br><br>
+
+<a th:href = "@{/newSchedule}"><button type = "button" id="startNewTable">Create New Schedule</button></a>
+
+</body>
+</html>

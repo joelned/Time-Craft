@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable Scheduling</title>
+    <style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #3498db;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+h1 {
+    color: #4B0082;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #3498db;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+}
+
+input, select {
+    width: calc(100% - 20px);
+    padding: 12px;
+    box-sizing: border-box;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #555;
+}
+
+button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s, transform 0.3s ease-in-out;
+    margin-bottom: 10px;
+
+}
+
+button:hover {
+    background-color: #217dbb;
+    transform: scale(1.03);
+}
+
+#resultMessage {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.event-container {
+    margin-bottom: 20px;
+}
+
+.event-container label {
+    margin-top: 10px;
+}
+
+.event-container input {
+    margin-top: 5px;
+}
+
+
+   </style>
+</head>
+<body>
+
+
+<div class="container">
+    <h1>Timetable Scheduling</h1>
+    <form id="myForm" th:action = "@{/saveEvent}" method = "post" th:object = "${event}">
+
+        <label for="day">Day:</label>
+        <select id="day" name="dayOfWeek" required>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+        </select>
+
+
+        <div id="eventsContainer">
+            <label for="courseCode">Course Code: </label>
+            <input type="text" id="courseCode" name="courseCode" required>
+
+            <label for="startTime">Start Time:</label>
+            <input type="time" id="startTime" name="startTime" required>
+
+            <label for="endTime">End Time:</label>
+            <input type="time" id="endTime" name="endTime" required>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
+
+            <label for="lecturer">Lecturer:</label>
+            <input type="text" id="lecturer" name="lecturer" required>
+
+        </div>
+
+        <button type="submit" id="addEvent">Add Event</button>
+        <button type="button" id = "button">Schedule Events</button>
+    </form>
+
+    <div id="resultMessage"></div>
+
+</div>
+
+<script>
+const button = document.getElementById("button");
+
+button.addEventListener('click', (e) => {
+url = "http://localhost:8091/getTimeTable";
+fetch(url, {
+method: "get"
+
+})
+.then(response => {
+if(!response.ok){
+console.log("Timetable generation failed");
+}
+else{
+window.location.href = "http://localhost:8091/getTimeTable";
+}
+})
+.catch(error =>
+{
+console.log("Error " + error);
+});
+})
+
+
+</script>
+</body>
+</html>

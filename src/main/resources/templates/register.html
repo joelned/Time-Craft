@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+</head>
+<style>
+   body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:#5a90af;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.login-container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+h2 {
+    color: #3498db;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+    color: #555;
+}
+
+input {
+    width: calc(100% - 20px);
+    padding: 14px;
+    box-sizing: border-box;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #26578a;
+    box-shadow: 0 0 20px rgba(50, 115, 220, 0.3);
+}
+
+button {
+    background-color: #3498db;
+    color: #fff;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s, transform 0.3s ease-in-out;
+    margin-bottom: 10px;
+}
+
+button:hover {
+    background-color: #26578a;
+    transform: scale(1.05);
+}
+
+p {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #217dbb;
+}
+
+
+@media screen and (max-width: 600px) {
+    .login-container {
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    input {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    button {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+}
+
+/* Fun Background Pattern */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/debut-light.png');
+    opacity: 0.1;
+    pointer-events: none;
+}
+.green-text{
+color: green;
+}
+.red-text{
+color: red;
+
+}
+span{
+font-size: 14px;
+}
+
+</style>
+
+<body>
+<div class="login-container">
+  <h2>Register</h2>
+  <form id = "myForm">
+    <div class="input-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" placeholder="Name" required>
+    </div>
+
+    <div class="input-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Email" required>
+    </div>
+
+    <div class="input-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Password" required>
+    </div>
+
+    <button type="submit" id = "saveDetails">Register</button>
+
+      <span id = "statusSpan"></span>
+
+
+
+    <p>Already have an account? <a th:href = "@{/login}">Login here</a></p>
+  </form>
+</div>
+
+
+<script>
+        document.body.style.backgroundImage = "url('https://www.transparenttextures.com/patterns/debut-light.png')";
+    </script>
+<script>
+const saveRegistrationData = document.getElementById("saveDetails");
+  saveRegistrationData.addEventListener('click', async () => {
+	event.preventDefault();
+    const form = document.getElementById("myForm");
+    var email = form.elements["email"].value; // Fix here: "elements" instead of "element"
+    var name = form.elements["name"].value;
+    var password = form.elements["password"].value;
+    var statusSpan = document.getElementById("statusSpan");
+    const postData = {
+        "email": email, // Fix here: use "email" instead of "username"
+        "password": password,
+        "name": name
+    }
+    const url = "http://localhost:8091/register";
+
+
+   const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(postData)
+    });
+    const data = await response.text()
+    .then(data => {
+        if (!response.ok) {
+        form.reset();
+        statusSpan.textContent = data;
+        statusSpan.classList.add("red-text");
+        }
+        form.reset();
+        statusSpan.textContent = data;
+        statusSpan.classList.add("green-text");
+  })
+    .catch(error => {
+        console.error('Error:', error);
+ });
+});
+</script>
+</body>
+
+</html>
