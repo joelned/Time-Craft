@@ -1,4 +1,5 @@
 package com.example.TimeTableGenerator.Controllers;
+import com.example.TimeTableGenerator.DTOs.ScheduleDTO;
 import com.example.TimeTableGenerator.Entities.Schedule;
 import com.example.TimeTableGenerator.Repositories.ScheduleRepository;
 import com.example.TimeTableGenerator.Services.ScheduleService;
@@ -31,12 +32,19 @@ public class ScheduleController {
     }
 
     @PostMapping("/saveEvent")
-    public String saveEvent(@ModelAttribute Schedule event){
-        scheduleRepository.save(event);
+    public String saveEvent(@ModelAttribute ScheduleDTO event){
+        Schedule newEvent = new Schedule();
+        newEvent.setCourseCode(event.getCourseCode());
+        newEvent.setLocation(event.getLocation());
+        newEvent.setLecturer(event.getLecturer());
+        newEvent.setDayOfWeek(event.getDayOfWeek());
+        newEvent.setEndTime(event.getStartTime());
+        newEvent.setStartTime(event.getStartTime());
+        scheduleRepository.save(newEvent);
         return "generate";
     }
 
-    @GetMapping("/getTimeTable")
+    @GetMapping("/timetable")
     public String displayTimeTable(Model model){
         List<Schedule> schedules = scheduleService.getAllSchedule();
         schedules.sort(Comparator.comparing(Schedule::getDayOfWeek, new DayOfWeekComparator()));

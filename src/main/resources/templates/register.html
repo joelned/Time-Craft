@@ -160,8 +160,8 @@ font-size: 14px;
     </div>
 
     <div class="input-group">
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" placeholder="Email" required>
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" placeholder="Username" required>
     </div>
 
     <div class="input-group">
@@ -185,19 +185,33 @@ font-size: 14px;
     </script>
 <script>
 const saveRegistrationData = document.getElementById("saveDetails");
+const form = document.getElementById("myForm");
   saveRegistrationData.addEventListener('click', async () => {
+  var isEmpty = Array.from(form.elements).some((element) =>{
+  return(
+  element.value.trim()===""&&
+  element.hasAttribute("required")&&
+  element.tagName.toLowerCase()==="input"
+
+  );
+  });
+  if(isEmpty){
+  alert("Please Fill the Required Fields.");
+  return;
+  }
+
+
 	event.preventDefault();
-    const form = document.getElementById("myForm");
-    var email = form.elements["email"].value; // Fix here: "elements" instead of "element"
+    var username= form.elements["username"].value;
     var name = form.elements["name"].value;
     var password = form.elements["password"].value;
-    var statusSpan = document.getElementById("statusSpan");
+    const statusSpan = document.getElementById("statusSpan");
     const postData = {
-        "email": email, // Fix here: use "email" instead of "username"
+        "username": username, // Fix here: use "email" instead of "username"
         "password": password,
         "name": name
     }
-    const url = "http://localhost:8091/register";
+    const url = "http://localhost:8091/api/auth/register";
 
 
    const response = await fetch(url, {
@@ -210,13 +224,14 @@ const saveRegistrationData = document.getElementById("saveDetails");
     const data = await response.text()
     .then(data => {
         if (!response.ok) {
-        form.reset();
-        statusSpan.textContent = data;
         statusSpan.classList.add("red-text");
+        statusSpan.textContent=data;
+        console.log("Request Unsuccessful");
         }
-        form.reset();
-        statusSpan.textContent = data;
+        statusSpan.classList.remove("red-text");
         statusSpan.classList.add("green-text");
+        statusSpan.textContent=data;
+        console.log("Request Successful");
   })
     .catch(error => {
         console.error('Error:', error);

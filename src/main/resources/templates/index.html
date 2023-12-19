@@ -131,10 +131,10 @@ color:red;
 <body>
 <div class="login-container">
     <h2>Login</h2>
-    <form id = "signInForm">
+    <form th:action = "@{/login}" method = "post" id = "signInForm">
         <div class="input-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Email">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Username">
         </div>
 
         <div class="input-group">
@@ -145,9 +145,10 @@ color:red;
         <button type="submit" id = "loginButton">Login</button>
 
         <p>Don't have an account? </p>
+        <span th:if = "${param.error}" id = "loginStatus">Login Unsuccessful</span>
     </form>
 
-        <span id = "loginStatus"></span><br>
+
 
 
     <button id = "registerButton" class="register-button" type="button">Register</button>
@@ -160,37 +161,24 @@ const loginButton = document.getElementById("loginButton");
 
 registerButton.addEventListener('click', (e) =>
 {
- url = "http://localhost:8091/register";
-
-    fetch(url, {
-    method: "GET"
-
-    })
-    .then( response => {
-    if(!response.ok){
-    console.log("Unsuccessful");
-    }
-    else{
-    window.location.href ="http://localhost:8091/register";
-    }
-    }
-    )
+window.location.href="http://localhost:8091/register"
 
 }
-)
+);
+/*
 loginButton.addEventListener('click', (event)=>{
 event.preventDefault();
  const signInForm = document.getElementById("signInForm");
- const email = signInForm.elements["email"].value;
+ const username = signInForm.elements["username"].value;
  const password = signInForm.elements["password"].value;
  const loginStatus = document.getElementById("loginStatus");
  const url2 = "http://localhost:8091/home"
  const data = {
- "email": email,
+ "username": username,
  "password": password
 
  }
-  url = "http://localhost:8091/login";
+  url = "http://localhost:8091/api/auth/login";
  fetch(url, {
  	method: "POST",
  	headers: {
@@ -234,6 +222,8 @@ event.preventDefault();
  console.error("Error: ", error);
  });
 });
+*/
+
 
 
 </script>

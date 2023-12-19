@@ -149,29 +149,25 @@ button:hover {
 </div>
 
 <script>
-const button = document.getElementById("button");
+document.getElementById("button").addEventListener('click', () => {
+const form = document.getElementById("myForm");
 
-button.addEventListener('click', (e) => {
-url = "http://localhost:8091/getTimeTable";
+// If all required fields are filled, make the API call
+const url = "http://localhost:8091/timetable";
 fetch(url, {
-method: "get"
-
+method: "get",
 })
-.then(response => {
-if(!response.ok){
+.then((response) => {
+if (!response.ok) {
 console.log("Timetable generation failed");
-}
-else{
-window.location.href = "http://localhost:8091/getTimeTable";
+} else {
+window.location.href = "http://localhost:8091/timetable";
 }
 })
-.catch(error =>
-{
+.catch((error) => {
 console.log("Error " + error);
 });
-})
-
-
+});
 </script>
 </body>
 </html>

@@ -1,11 +1,8 @@
 package com.example.TimeTableGenerator.Repositories;
 
-import com.example.TimeTableGenerator.Entities.User;
+import com.example.TimeTableGenerator.Entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface UserRepository extends JpaRepository<User,Integer> {
-    List<User> findUsersByEmail(String email);
-    User findUserByEmail(String email);
+public interface UserRepository extends JpaRepository<UserEntity,Integer> {
+    UserEntity findUserByUsername(String username);
 }
